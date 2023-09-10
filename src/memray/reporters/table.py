@@ -34,11 +34,15 @@ class TableReporter:
     ) -> "TableReporter":
         result = []
         for record in allocations:
-            stack_trace = (
-                list(record.hybrid_stack_trace(max_stacks=1))
-                if native_traces
-                else record.stack_trace(max_stacks=1)
-            )
+            try:
+                stack_trace = (
+                    list(record.hybrid_stack_trace(max_stacks=1))
+                    if native_traces
+                    else record.stack_trace(max_stacks=1)
+                )
+            except Exception:
+                print(f"Ignoring {record}")
+                continue
             stack = "???"
             if stack_trace:
                 function, file, line = stack_trace[0]
