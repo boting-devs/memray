@@ -118,7 +118,7 @@ class FlameGraphReporter:
     ) -> None:
         super().__init__()
         self.data = data
-        self.memory_records = memory_records
+        self.memory_records = memory_records[::1000]
 
     @classmethod
     def generate_nodes(
