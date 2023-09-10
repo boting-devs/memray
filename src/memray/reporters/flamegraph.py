@@ -283,11 +283,15 @@ class FlameGraphReporter:
                     "n_allocations": record.n_allocations,
                 }
 
-            stack = (
-                tuple(record.hybrid_stack_trace())
-                if native_traces
-                else record.stack_trace()
-            )
+            try:
+                stack = (
+                    tuple(record.hybrid_stack_trace())
+                    if native_traces
+                    else record.stack_trace()
+                )
+            except Exception:
+               print(f"Ignoring record {record}")
+               continue
 
             if not inverted:
                 # normal flamegraph
